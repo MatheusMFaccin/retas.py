@@ -1,6 +1,7 @@
 #classe onde vai ficar armazenado os pontos x e y das retas 
 # e tambem vai fazer as operações para achar o coeficiente angular 
 # e os pontos de intesecção
+#-----------------------
 class Reta:
     def __init__(self, x , y):
         self.x = x
@@ -46,14 +47,27 @@ class Reta:
 def calcularCoeficiente(coeficiente1,coeficient2):
     return coeficiente1 - coeficient2
           
-           
+def acharInterseccao(coeficientes):
+    for i in range(len(coeficientes)):
+      print("contador: "+str(i)+" coeficiente: "+str(coeficientes[i]))
+      for j in range(len(coeficientes)):
+        print("contador: "+str(j)+" coeficiente: "+str(coeficientes[j]))
+        if i == j:
+          print("")
+        elif coeficientes[i] == coeficientes[j]:
+          print("as retas são paralelas")
+        else:
+          print("as retas não são paralelas")
+               
 
 
 i = 0
 retas  = []
 coeficientes = []
 # input para o usuario escolher os valores das retas NÃO DIGITE LETRAS DIGITE APENAS VALORES 
-while i < 2:       
+numeroRetas = int(input("quantas retas você quer criar"))
+i = 0
+while i < numeroRetas:        
     x = float(input("defina o valor de x da reta "+str(i+1)+" : "))
     y = float(input("defina o valor de y da reta"+str(i+1)+" : "))
     retas.append(Reta(x,y))
@@ -61,9 +75,6 @@ while i < 2:
     i+=1
     
 coeficientes = Reta.coeficienteAngular(retas)
+acharInterseccao(coeficientes)
 
-if coeficientes[0] == coeficientes[1]:
-    print("as retas são paralelas") 
-else:
-    print("as retas não são paralelas")
-    Reta.calcularInterseccao(retas)
+
