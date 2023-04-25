@@ -15,11 +15,16 @@ class Restricao():
     # que vai resulta em " M1X1-M2X2 = B2 -B1 " e por fim vai resultar em " X = B/M "
     # depois de acharmos o X eu subistitui o X na primeira equação no caso "M*valor de X + B"
 class Pontos():
-      def __init__(self, x , y,restricao1,restricao2):
-        self.restricao1 = restricao1
-        self.restricao2 = restricao2
-        self.x = x 
-        self.y = y
+
+        def __init__(self, x , y,restricao1,*restricao2: None):
+            self.restricao1 = restricao1
+            
+            if restricao2:
+                self.restricao2 = restricao2
+            
+            self.x = x 
+            self.y = y
+        
 
 def calcularSistema(sistemas):
     # mx1 +b1 -z1 = mx2 +b2 -z2
@@ -66,7 +71,16 @@ def coeficienteAngular(retas,coeficientes):
                 
             else:
                 resultado = reta.cordenadaX/reta.cordenadaY
-            coeficientes.append(resultado)   
+            coeficientes.append(resultado)
+def exibirPontos(pontos):
+    for ponto in pontos:
+        if 'restricao2' in dir(ponto):
+            print("retrição 1: "+str(ponto.restricao1.cordenadaX)+"  "+str(ponto.restricao1.cordenadaY)+"  "+str(ponto.restricao1.coeficiente))
+            print("retrição 2: "+str(ponto.restricao2.cordenadaX)+"  "+str(ponto.restricao2.cordenadaY)+"  "+str(ponto.restricao2.coeficiente))
+            print("x: "+str(ponto.x)+" y: "+str(ponto.y))
+        else:
+            print("retrição 1: "+str(ponto.restricao1.cordenadaX)+"  "+str(ponto.restricao1.cordenadaY))
+            print("x: "+str(ponto.x)+" y: "+str(ponto.y))
 
 restricoes  = []
 coeficientes = []
@@ -81,18 +95,17 @@ while i < numeroRetas:
     coeficiente = float(input("defina o valor do coeficiente da reta"+str(i+1)+" : "))
     restricoes.append(Restricao(x,y,coeficiente))
     print("x: " +str(restricoes[i].cordenadaX) + "  y: "+ str(+restricoes[i].cordenadaY)+"  restrição: "+ str(+restricoes[i].coeficiente))
+    pontos.append(Pontos(restricoes[i].cordenadaX,restricoes[i].cordenadaY,restricoes[i]))
     i+=1
-    restricoes.append(Restricao(x,y,coeficiente))
+    
+    
      
 coeficienteAngular(restricoes,coeficientes)
 print("numero de coeficientes: "+str(len(coeficientes)))
 print("numero de restricoes: "+str(len(restricoes)))
 acharInterseccao(coeficientes,pontos,restricoes)
 print("pontos de intersecção ")
-for ponto in pontos:
-    print("retrição 1: "+str(ponto.restricao1.cordenadaX)+"  "+str(ponto.restricao1.cordenadaY)+"  "+str(ponto.restricao1.coeficiente))
-    print("retrição 2: "+str(ponto.restricao2.cordenadaX)+"  "+str(ponto.restricao2.cordenadaY)+"  "+str(ponto.restricao2.coeficiente))
-    print("x: "+str(ponto.x)+" y: "+str(ponto.y))
+exibirPontos(pontos)
 
 
 
