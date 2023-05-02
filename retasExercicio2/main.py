@@ -16,11 +16,9 @@ class Restricao():
     # depois de acharmos o X eu subistitui o X na primeira equação no caso "M*valor de X + B"
 class Pontos():
 
-        def __init__(self, x , y,restricao1,*restricao2: None):
+        def __init__(self, x , y,restricao1, restricao2=None):
             self.restricao1 = restricao1
-            
-            if restricao2:
-                self.restricao2 = restricao2
+            self.restricao2 = restricao2
             
             self.x = x 
             self.y = y
@@ -74,18 +72,39 @@ def coeficienteAngular(retas,coeficientes):
             coeficientes.append(resultado)
 def exibirPontos(pontos):
     for ponto in pontos:
-        if 'restricao2' in dir(ponto):
+        if ponto.restricao2==None:
+            print("retrição 1: "+str(ponto.restricao1.cordenadaX)+"  "+str(ponto.restricao1.cordenadaY))
+            print("x: "+str(ponto.x)+" y: "+str(ponto.y))
+            
+        else:
             print("retrição 1: "+str(ponto.restricao1.cordenadaX)+"  "+str(ponto.restricao1.cordenadaY)+"  "+str(ponto.restricao1.coeficiente))
             print("retrição 2: "+str(ponto.restricao2.cordenadaX)+"  "+str(ponto.restricao2.cordenadaY)+"  "+str(ponto.restricao2.coeficiente))
             print("x: "+str(ponto.x)+" y: "+str(ponto.y))
-        else:
-            print("retrição 1: "+str(ponto.restricao1.cordenadaX)+"  "+str(ponto.restricao1.cordenadaY))
-            print("x: "+str(ponto.x)+" y: "+str(ponto.y))
+            
+def calcularPontosRetas(restricoes,pontos):
+    for restricao in restricoes:
+        y = -(restricao.coeficiente/restricao.cordenadaY)
+        x = -(restricao.coeficiente/restricao.cordenadaX)
+        pontos.append(Pontos(x,y,restricao)) 
+def calcularFuncaoObjetiva(pontos, resultado):
+    # e ruim pra comenta vo usar //
+    #// para calculara função basta aplicala junto ao ponto em questão, no caso ficaria:
+    #// transformar a função dada em equação.
+    #// ex: 3x - y  --> 3.(x) - 1*(y), onde x e y pertencem ao ponto dado pelo limite.
+    #// para equacao = [3,-1]
+    for ponto in pontos:
+        
+        #// Faccin disse que o python não sabe regra de sinal então tem que dividir em duas variaveis.
+        a = (ponto.restricao1.cordenadaX*ponto.x)
+        b = (ponto.restricao1.cordenadaY*ponto.y)
+        resultado.append(-(a + b))
+
 
 restricoes  = []
 coeficientes = []
 pontos = []
 sistema = []
+resultados = []
 # input para o usuario escolher os valores das retas NÃO DIGITE LETRAS DIGITE APENAS VALORES 
 numeroRetas = int(input("quantas retas você quer criar ? "))
 i = 0
@@ -95,17 +114,23 @@ while i < numeroRetas:
     coeficiente = float(input("defina o valor do coeficiente da reta"+str(i+1)+" : "))
     restricoes.append(Restricao(x,y,coeficiente))
     print("x: " +str(restricoes[i].cordenadaX) + "  y: "+ str(+restricoes[i].cordenadaY)+"  restrição: "+ str(+restricoes[i].coeficiente))
-    pontos.append(Pontos(restricoes[i].cordenadaX,restricoes[i].cordenadaY,restricoes[i]))
     i+=1
     
     
-     
+calcularPontosRetas(restricoes,pontos)
 coeficienteAngular(restricoes,coeficientes)
 print("numero de coeficientes: "+str(len(coeficientes)))
 print("numero de restricoes: "+str(len(restricoes)))
 acharInterseccao(coeficientes,pontos,restricoes)
 print("pontos de intersecção ")
 exibirPontos(pontos)
+calcularFuncaoObjetiva(pontos,resultados)
+print("resultado do max")
+for resultado in resultados:
+    print(str(resultado))
+
+
+
 
 
 
