@@ -16,12 +16,11 @@ class Pontos():
         def __init__(self, x , y,restricao1, restricao2=None):
             self.restricao1 = restricao1
             self.restricao2 = restricao2
-            
             self.x = x 
             self.y = y
         
     
-def solve_system_2x2(x1, y1, c1, x2, y2, c2):
+def calcularInterseccao(x1, y1, c1, x2, y2, c2):
     det = x1*y2 - x2*y1
     det_x = c1*y2 - c2*y1
     det_y = x1*c2 - x2*c1
@@ -46,7 +45,7 @@ def acharInterseccao(coeficientes,pontos,restricoes):
           print("as retas são paralelas")
         elif coeficientes[i] != coeficientes[j]:
             print("as retas não são paralelas")
-            x,y =solve_system_2x2(restricoes[i].cordenadaX,restricoes[i].cordenadaY,restricoes[i].coeficiente,restricoes[j].cordenadaX,restricoes[j].cordenadaY,restricoes[j].coeficiente,)          
+            x,y = calcularInterseccao(restricoes[i].cordenadaX,restricoes[i].cordenadaY,restricoes[i].coeficiente,restricoes[j].cordenadaX,restricoes[j].cordenadaY,restricoes[j].coeficiente,)          
             if any(ponto.x == x for ponto in pontos) == True and any(ponto.y == y for ponto in pontos) == True:
                 print("ponto ja adicionado")
             else:
@@ -82,7 +81,7 @@ def calcularPontosRetas(restricoes,pontos):
             x = -(restricao.coeficiente/restricao.cordenadaX)
             pontos.append(Pontos(x,y,restricao))
              
-def calcularFuncaoObjetiva(pontos, resultado):
+def calcularFuncaoObjetiva(pontos, resultado,xMaxima,yMaxima):
     # e ruim pra comenta vo usar //
     #// para calculara função basta aplicala junto ao ponto em questão, no caso ficaria:
     #// transformar a função dada em equação.
@@ -91,8 +90,8 @@ def calcularFuncaoObjetiva(pontos, resultado):
     for ponto in pontos:
         
         #// Faccin disse que o python não sabe regra de sinal então tem que dividir em duas variaveis.
-        a = (ponto.restricao1.cordenadaX*ponto.x)
-        b = (ponto.restricao1.cordenadaY*ponto.y)
+        a = (xMaxima*ponto.x)
+        b = (yMaxima*ponto.y)
         resultado.append(-(a + b))
 
 # 4x -2y <= 5
@@ -113,16 +112,14 @@ def acharPontosValidos(pontos, restricoes):
                     print("não tem restrição")
                 elif eval(str(resultado)+restricao.sinal+str((-restricao.coeficiente))):
                     print("valido para ",resultado)
-                    contador = contador+1
+                    
                 else:
                     print("invalido invalido para ",resultado)
                     
             else:
                 print("algo errado")
         
-        #if(contador==len(restricoes)-2):
-            #pontosValidos.append(ponto)
-    #return pontosValidos
+        
     
 def calculoPontosRestricoes(ponto,restricao):
     #if restricao.cordenadaX == -1:
@@ -138,7 +135,7 @@ pontos = []
 sistema = []
 resultados = []
 # input para o usuario escolher os valores das retas NÃO DIGITE LETRAS DIGITE APENAS VALORES 
-numeroRetas = int(input("quantas retas você quer criar ? "))
+numeroRetas = int(input("quantas restrições você quer criar ? "))
 i = 0
 while i < numeroRetas:        
     x = float(input("defina o valor de x da reta "+str(i+1)+" :  "))
@@ -151,7 +148,7 @@ while i < numeroRetas:
     restricoes.append(Restricao(x,y,coeficiente,sinal))
     print("x: " +str(restricoes[i].cordenadaX) + "  y: "+ str(+restricoes[i].cordenadaY)+"  restrição: "+ str(+restricoes[i].coeficiente))
     i+=1
-    
+ 
     
 calcularPontosRetas(restricoes,pontos)
 coeficienteAngular(restricoes,coeficientes)
@@ -160,12 +157,16 @@ print("numero de restricoes: "+str(len(restricoes)))
 acharInterseccao(coeficientes,pontos,restricoes)
 print("pontos de intersecção ")
 exibirPontos(pontos)
-calcularFuncaoObjetiva(pontos,resultados)
+
 print("resultado do max")
+
+xMaxima = float(input("digite o x da equação maxima"))
+yMaxima = float(input("digite o y da equação maxima"))
+calcularFuncaoObjetiva(pontos,resultados,xMaxima,yMaxima)
 for resultado in resultados:
     print(str(-resultado))
+acharPontosValidos(pontos,restricoes)
 
-#pontosValidos = acharPontosValidos(pontos,restricoes)
 
 
 
