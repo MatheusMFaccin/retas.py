@@ -81,21 +81,31 @@ def calcularPontosRetas(restricoes,pontos):
             x = -(restricao.coeficiente/restricao.cordenadaX)
             pontos.append(Pontos(x,y,restricao))
              
-def calcularFuncaoObjetiva(pontos, resultado,xMaxima,yMaxima):
-    # e ruim pra comenta vo usar //
-    #// para calculara função basta aplicala junto ao ponto em questão, no caso ficaria:
-    #// transformar a função dada em equação.
+def calcularFuncaoObjetiva(pontos, resultado,xMax,yMax):
+    #// Para calcular a função Max. basta aplicar junto a cada ponto, logo...
+    
+    #// 1) Transformar a função dada em equação.
     #// ex: 3x - y  --> 3.(x) - 1*(y), onde x e y pertencem ao ponto dado pelo limite.
-    #// para equacao = [3,-1]
-    for ponto in pontos:
-        
-        #// Faccin disse que o python não sabe regra de sinal então tem que dividir em duas variaveis.
-        a = (xMaxima*ponto.x)
-        b = (yMaxima*ponto.y)
-        resultado.append(-(a + b))
+    
+    #// 2) Calcular Z para o coefiente de cada ponto.
+    #// ex: xMax = 3 e yMax = -1 para 3x - 1y. 
 
-# 4x -2y <= 5
-# 4*3,5 - 2*4,5
+    #// Para todos os pontos contido em pontos:
+    for ponto in pontos:
+
+        #// Exibe o resultado da função maximizar:
+        print("Z Maximizado para o ponto P(",ponto.x,", ",ponto.y,"): \n")
+        print("Z = (",xMax,"*",ponto.x,") + (",yMax,"*",ponto.y,")")
+
+        #// M. Faccin disse que o python não sabe regra de sinal então tem que dividir em duas variaveis.
+        a = (xMax*ponto.x)
+        b = (yMax*ponto.y)
+        resultado.append(-(a + b)) # (lista??)
+
+        #// Imprime o resultado além de guardar em uma lista/array/tudo.
+        print("Z = "+resultado)
+
+
  
 
 def acharPontosValidos(pontos, restricoes):
