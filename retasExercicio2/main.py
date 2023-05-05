@@ -165,9 +165,8 @@ print("resultado do max")
 for resultado in resultados:
     print(str(-resultado))
 
-pontosValidos = acharPontosValidos(pontos,restricoes)
+#pontosValidos = acharPontosValidos(pontos,restricoes)
 
-for ponto in pontosValidos:
-    print("x: ",ponto.x,"  y: ",ponto.y)
+
 
 
