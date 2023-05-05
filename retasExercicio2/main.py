@@ -1,11 +1,7 @@
 #criar uma classe coeficiente angular e associar as retas ultilizadas para achar aquele coeficiente angular.
-class CoeficienteAngular:
-    def __init__(self,restricao1,coefAngular,restricao2):
-        self.restricao1 = restricao1
-        self.restricao2 = restricao2
-        self.coefAngular = coefAngular    
+
 class Restricao():
-    def __init__(self, cordenadaX , cordenadaY, coeficiente,sinal):
+    def __init__(self, cordenadaX , cordenadaY, coeficiente,sinal=None):
         self.cordenadaX = cordenadaX 
         self.cordenadaY = cordenadaY
         self.coeficiente = coeficiente
@@ -49,9 +45,12 @@ def acharInterseccao(coeficientes,pontos,restricoes):
         elif coeficientes[i] == coeficientes[j]:
           print("as retas são paralelas")
         elif coeficientes[i] != coeficientes[j]:
-          print("as retas não são paralelas")
-          x,y =solve_system_2x2(restricoes[i].cordenadaX,restricoes[i].cordenadaY,restricoes[i].coeficiente,restricoes[j].cordenadaX,restricoes[j].cordenadaY,restricoes[j].coeficiente,)          
-          pontos.append(Pontos(x,y,restricoes[i],restricoes[j]))
+            print("as retas não são paralelas")
+            x,y =solve_system_2x2(restricoes[i].cordenadaX,restricoes[i].cordenadaY,restricoes[i].coeficiente,restricoes[j].cordenadaX,restricoes[j].cordenadaY,restricoes[j].coeficiente,)          
+            if any(ponto.x == x for ponto in pontos) == True and any(ponto.y == y for ponto in pontos) == True:
+                print("ponto ja adicionado")
+            else:
+                pontos.append(Pontos(x,y,restricoes[i],restricoes[j]))
         else:
             print("")
 
@@ -96,6 +95,10 @@ def calcularFuncaoObjetiva(pontos, resultado):
         b = (ponto.restricao1.cordenadaY*ponto.y)
         resultado.append(-(a + b))
 
+# 4x -2y <= 5
+# 4*3,5 - 2*4,5
+ 
+
 def acharPontosValidos(pontos, restricoes):
     pontosValidos = []
     for ponto in pontos:
@@ -103,19 +106,31 @@ def acharPontosValidos(pontos, restricoes):
         contador = 0
         for restricao in restricoes:
             resultado = calculoPontosRestricoes(ponto,restricao)
+            
             if restricao.coeficiente<=0:
-                if eval(str(resultado)+restricao.sinal+str((-restricao.coeficiente))):
-                    print("valido")
-                    contador+=1
+                
+                if restricao.sinal == "":
+                    print("não tem restrição")
+                elif eval(str(resultado)+restricao.sinal+str((-restricao.coeficiente))):
+                    print("valido para ",resultado)
+                    contador = contador+1
                 else:
-                    print("invalido")
+                    print("invalido invalido para ",resultado)
+                    
             else:
                 print("algo errado")
-        if(contador==range(restricoes)):
+        
+        if(contador==len(restricoes)-2):
             pontosValidos.append(ponto)
     return pontosValidos
+    
 def calculoPontosRestricoes(ponto,restricao):
+    #if restricao.cordenadaX == -1:
+      #  restricao.cordenadaX = 1
+    #if restricao.cordenadaY == -1:
+       # restricao.cordenadaY = 1
     resultado = (ponto.x*restricao.cordenadaX)+(ponto.y*restricao.cordenadaY)
+    resultado = round(resultado,2)
     return resultado
 restricoes  = []
 coeficientes = []
@@ -148,7 +163,7 @@ exibirPontos(pontos)
 calcularFuncaoObjetiva(pontos,resultados)
 print("resultado do max")
 for resultado in resultados:
-    print(str(resultado))
+    print(str(-resultado))
 
 pontosValidos = acharPontosValidos(pontos,restricoes)
 
