@@ -120,9 +120,9 @@ def acharPontosValidos(pontos, restricoes):
             else:
                 print("algo errado")
         
-        if(contador==len(restricoes)-2):
-            pontosValidos.append(ponto)
-    return pontosValidos
+        #if(contador==len(restricoes)-2):
+            #pontosValidos.append(ponto)
+    #return pontosValidos
     
 def calculoPontosRestricoes(ponto,restricao):
     #if restricao.cordenadaX == -1:
