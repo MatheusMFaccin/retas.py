@@ -79,8 +79,8 @@ def calcularPontosRetas(restricoes,pontos):
         if restricao.coeficiente!=0 and restricao.cordenadaY!=0 and restricao.cordenadaX!=0:
             y = -(restricao.coeficiente/restricao.cordenadaY)
             x = -(restricao.coeficiente/restricao.cordenadaX)
-            pontos.append(Pontos(x,y,restricao))
-             
+            pontos.append(Pontos(x,0,restricao))
+            pontos.append(Pontos(0,y,restricao))             
 def calcularFuncaoObjetiva(pontos, resultado,xMax,yMax):
     #// Para calcular a função Max. basta aplicar junto a cada ponto, logo...
     
@@ -102,8 +102,9 @@ def calcularFuncaoObjetiva(pontos, resultado,xMax,yMax):
         b = (yMax*ponto.y)
         resultado.append(-(a + b)) # (lista??)
 
+    return resultado
         #// Imprime o resultado além de guardar em uma lista/array/tudo.
-        print("Z = "+resultado)
+        
 
 
  
@@ -125,11 +126,16 @@ def acharPontosValidos(pontos, restricoes):
                     
                 else:
                     print("invalido invalido para ",resultado)
+                    contador+=1
                     
             else:
                 print("algo errado")
         
-        
+        if contador==0:
+            pontosValidos.append(ponto)
+        else:
+            contador = 0
+    return pontosValidos
     
 def calculoPontosRestricoes(ponto,restricao):
     #if restricao.cordenadaX == -1:
@@ -172,11 +178,16 @@ print("resultado do max")
 
 xMaxima = float(input("digite o x da equação maxima"))
 yMaxima = float(input("digite o y da equação maxima"))
-calcularFuncaoObjetiva(pontos,resultados,xMaxima,yMaxima)
+
+
+pontosValidos = acharPontosValidos(pontos,restricoes)
+
+for ponto in pontosValidos:
+    print("x: ",ponto.x," y: ",ponto.y)
+    
+resultados = calcularFuncaoObjetiva(pontosValidos,resultados,xMaxima,yMaxima)
 for resultado in resultados:
     print(str(-resultado))
-acharPontosValidos(pontos,restricoes)
-
 
 
 
