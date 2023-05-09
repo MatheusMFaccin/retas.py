@@ -29,31 +29,47 @@ def calcularInterseccao(x1, y1, c1, x2, y2, c2):
         y = det_y / det
         x = x*(-1)
         y = y*(-1)
+        x = round(x,2)
+        y = round(y,2)
         return (x, y)
     else:
         return 0 , 0
 
 def acharInterseccao(coeficientes,pontos,restricoes):
-    
+    # i=0 < tamanho lista coeficientes i++ 
+    # j= 0 < tamanho lista coeficientes j++
     for i in range(len(coeficientes)):
       print("contador: "+str(i)+" coeficiente: "+str(coeficientes[i]))
       for j in range(len(coeficientes)):
         print("contador: "+str(j)+" coeficiente: "+str(coeficientes[j]))
+        #se o i tiver o mesmo valor que o j exemplo: i=1 e o j=1 ele vai pular para não comparar o mesmo valor
         if i == j:
           print("")
+        # se o coeficiente na posição i da lista de coeficientes for igual ao coeficiente na posição j 
+        # da lista de coeficientes significa que as retas são paralelas
         elif coeficientes[i] == coeficientes[j]:
           print("as retas são paralelas")
+        
+        # se os coeficientes forem diferentes significa que elas não são paralelas logo tem intercecção
         elif coeficientes[i] != coeficientes[j]:
             print("as retas não são paralelas")
+            #calcula o ponto(x,y) da intercecção das retas
             x,y = calcularInterseccao(restricoes[i].cordenadaX,restricoes[i].cordenadaY,restricoes[i].coeficiente,restricoes[j].cordenadaX,restricoes[j].cordenadaY,restricoes[j].coeficiente,)          
+            #verifica se o Ponto(x,y) ja foi adicionado na Lista de Pontos 
             if any(ponto.x == x for ponto in pontos) == True and any(ponto.y == y for ponto in pontos) == True:
                 print("ponto ja adicionado")
             else:
+                #depois de verificar que o ponto não foi adicionado ele adiciona na lista de pontos
                 pontos.append(Pontos(x,y,restricoes[i],restricoes[j]))
         else:
             print("")
 
 def coeficienteAngular(retas,coeficientes):
+    
+    # 2x+2y <=6
+    # coeficiente angular  = x/y 2/2
+    # x + 0 >= 0
+    
         for reta in retas:
             if reta.cordenadaX == 0:
                 resultado = ""
@@ -63,6 +79,8 @@ def coeficienteAngular(retas,coeficientes):
             else:
                 resultado = reta.cordenadaX/reta.cordenadaY
             coeficientes.append(resultado)
+            
+            
 def exibirPontos(pontos):
     for ponto in pontos:
         if ponto.restricao2==None:
@@ -75,12 +93,15 @@ def exibirPontos(pontos):
             print("x: "+str(ponto.x)+" y: "+str(ponto.y))
             
 def calcularPontosRetas(restricoes,pontos):
+    #percorre a lista de restrições 
     for restricao in restricoes:
-        if restricao.coeficiente!=0 and restricao.cordenadaY!=0 and restricao.cordenadaX!=0:
+        
+        if restricao.cordenadaY!=0 and restricao.cordenadaX!=0:
             y = -(restricao.coeficiente/restricao.cordenadaY)
             x = -(restricao.coeficiente/restricao.cordenadaX)
             pontos.append(Pontos(x,0,restricao))
-            pontos.append(Pontos(0,y,restricao))             
+            pontos.append(Pontos(0,y,restricao))
+                       
 def calcularFuncaoObjetiva(pontos, resultado,xMax,yMax):
     #// Para calcular a função Max. basta aplicar junto a cada ponto, logo...
     
@@ -145,6 +166,8 @@ def calculoPontosRestricoes(ponto,restricao):
     resultado = (ponto.x*restricao.cordenadaX)+(ponto.y*restricao.cordenadaY)
     resultado = round(resultado,2)
     return resultado
+
+
 restricoes  = []
 coeficientes = []
 pontos = []
